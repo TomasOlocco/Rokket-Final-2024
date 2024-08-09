@@ -77,10 +77,10 @@ export default {
   },
   methods: {
     generarId() {
-      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
       let id = '';
       for (let i = 0; i < 8; i++) {
-        id += chars.charAt((Math.random()));
+        id += chars.charAt(Math.floor(Math.random() * chars.length));
       }
       return id;
     },
@@ -89,8 +89,8 @@ export default {
       const idAlf = {
         id: idGenerado
       };
-      localStorage.setItem('usuario', JSON.stringify(idAlf)),
-      localStorage.getItem('usuario');
+      localStorage.setItem('idUsuario', JSON.stringify(idAlf)),
+      localStorage.getItem('idUsuario');
       console.log(idAlf);
       this.idAlf = idGenerado;
       this.nombre = '';
