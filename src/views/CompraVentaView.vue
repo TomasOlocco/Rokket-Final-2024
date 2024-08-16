@@ -39,11 +39,10 @@
       <p>{{ verificarTransaccion }}</p>
       <div v-if="operacion">
         <h2>Detalles de la Transacción:</h2>
-        <p><strong>ID de Usuario:</strong> {{ operacion.user_id }}</p>
-        <p><strong>Acción:</strong> {{ operacion.compraVenta }}</p>
-        <p><strong>Código de Criptomoneda:</strong> {{ operacion.crypto_code }}</p>
-        <p><strong>Cantidad de Criptomoneda:</strong> {{ operacion.crypto_amount }}</p>
-        <p><strong>Monto en Dinero:</strong> {{ operacion.money }}</p>
+        <p><strong>Usuario:</strong> {{ operacion.user_id }}</p>
+        <p><strong>Acción Realizada:</strong> {{ operacion.compraVenta }}</p>
+        <p><strong>Cantidad:</strong> {{ operacion.crypto_amount }}</p>
+        <p><strong>Monto:</strong> {{ operacion.money }}</p>
         <p><strong>Fecha y Hora:</strong> {{ operacion.datetime }}</p>
       </div>
     </div>
@@ -98,9 +97,9 @@ export default {
       const fiat = 'ars';
       const api = `https://criptoya.com/api/argenbtc/${moneda}/${fiat}`;
 
-      //const url = `https://laboratorio3-f36a.restdb.io/rest/transactions?q={"user_id":"${idUsuario}","crypto_code":"${codigoCripto}"}`;
-      //  const apiClient = this.ApiClient();
-
+      const url = `https://laboratorio3-f36a.restdb.io/rest/transactions?q={"user_id":"${idUsuario}","crypto_code":"${codigoCripto}"}`;
+        const apiClient = this.ApiClient();
+        
       try {
         const respuesta = await axios.get(api);
         console.log('Valor de la criptomoneda:', respuesta.data);

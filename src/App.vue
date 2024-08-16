@@ -2,6 +2,7 @@
   <nav>
     <router-link to="/">Index</router-link> |
     <router-link to="/compraYventa">Compra y Venta de Criptomonedas</router-link>
+    <router-link to="/historial">Historial de Movimientos</router-link>
   </nav>
   <router-view/>
 </template>
