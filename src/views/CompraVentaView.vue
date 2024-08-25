@@ -65,6 +65,7 @@ export default {
       cantidadCripto: '',
       monto: '',
       verificarTransaccion: '',
+      movimientos: [],
       operacion: null, 
       valorCripto: null,
       usuarioNoVacio: false
@@ -117,15 +118,14 @@ export default {
         const respuesta = await apiClient.post('/transactions', operacion);
         this.verificarTransaccion = 'Transacción registrada exitosamente';
         this.operacion = respuesta.data;
-        this.cantidadCripto = '';
-        this.monto = '';
-        this.valorCripto = null;
+        // Agregar la transacción al objeto movimientos
+        this.movimientos.push(operacion);
         // modificar la transaccion en la misma pantalla
         this.$modificarTransaccion(() => {
           console.log('Transacción actualizada:', this.operacion);
         });
       } catch (error) {
-        this.verificarTransaccion = 'Error al registrar la transacción';
+        //this.verificarTransaccion = 'Error al registrar la transacción';
         console.error('Error al hacer la solicitud POST:', error.respuesta || error.mensaje);
       }
     }
