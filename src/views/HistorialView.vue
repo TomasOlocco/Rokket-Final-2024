@@ -1,5 +1,5 @@
 <template>
-<div>
+ <div>
     <h1>Historial de Movimientos</h1>
     <form @submit.prevent="transaccionesRealizadas"></form>
     <div>
@@ -23,17 +23,17 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="movimiento in movimientos" :key="movimiento">
-            <td>{{ movimientosAlmacenados.action}}</td>
-            <td>{{ movimientosAlmacenados.crypto_code }}</td>
-            <td>{{ movimientosAlmacenados.crypto_amount }}</td>
-            <td>{{ movimientosAlmacenados.money }}</td>
-            <td>{{ movimientosAlmacenados.datetime }}</td>
+          <tr v-for="movimiento in movimientos" :key="movimiento._id">
+            <td>{{ movimiento.datetime }}</td>
+            <td>{{ movimiento.crypto_code }}</td>
+            <td>{{ movimiento.crypto_amount }}</td>
+            <td>{{ movimiento.money }}</td>
+            <td>{{ movimiento.action === 'purchase' ? 'Compra' : 'Venta' }}</td>
           </tr>
         </tbody>
       </table>
     </div>
-</div>
+ </div>
 </template>
 
 <script>
@@ -43,21 +43,14 @@ export default {
   data() {
     return {
       idUsuario: '',
-      movimientosAlmacenados: [],   // Lista de transacciones obtenidas
+      movimientos: [],   // Lista de transacciones obtenidas
       submitted: false,
       validarMovimientos: null,
       nuevoId: ''
     };
   },
-  methods: { 
-    ApiClient() {
-     return axios.create({
-     baseURL: 'https://laboratorio3-f36a.restdb.io/rest/',
-     headers: { 'x-apikey': '60eb09146661365596af552f' },
-     });
-    },
+  methods: {
     buscarId() {
-    // buscar el usuario almacenado en localStorage
     const idAlmacenado = localStorage.getItem('idUsuario');
     if (idAlmacenado) {
       this.idUsuario = idAlmacenado;
@@ -65,27 +58,32 @@ export default {
     }
     else{
       console.error('Error al obtener el id de usuario');
-    };
+    }
   },
-  verificarMovimientosRegistrados() {
-      const idUsuario = this.nuevoId || localStorage.getItem('idUsuario');
-      const url = `https://laboratorio3-f36a.restdb.io/rest/transactions?q={"user_id":"${idUsuario}"}`;
-      const apiClient = this.ApiClient();
-
-      apiClient
-        .get(url)
-        .then(response => {
-          this.movimientos = response.data;
-          if (this.movimientos.length === 0) {
-            console.log('No se encontraron movimientos registrados.');
-          } else {
-            console.log('Se encontraron movimientos registrados.');
-          }
-        })
-        .catch(error => {
-          console.error('Error al obtener los movimientos:', error);
-        });
-    },
+  ApiClient(){
+    const apiClient = axios.create({
+      baseURL: 'https://laboratorio3-f36a.restdb.io/rest/',
+      headers: { 'x-apikey': '60eb09146661365596af552f' }
+    });
+    return apiClient;
+  },
+  movimientosDeUsuario(){
+    const apiClient = this.ApiClient();
+    apiClient.get(`/transactions?q={"user_id":"${this.idUsuario}"}`)
+    .then(response => {
+      if (response.data.length > 0) {
+       this.movimientos = response.data;
+       this.validarMovimientos = true;
+      } else {
+        console.log('No hay transacciones');
+       this.validarMovimientos = false;
+      }
+    })
+    .catch(error => {
+      console.error(error);
+      this.validarMovimientos = false;
+    });
+   }
   }
 };
 </script>

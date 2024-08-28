@@ -8,9 +8,9 @@
       </div>
       <div>
         <label for="tipoDeOperacion">Elija el tipo de operación</label>
-        <select v-model="operacion" @change="tipoDeOperacion" required>
-          <option value="compra">Comprar</option>
-          <option value="venta">Vender</option>
+        <select v-model="tipoDeOperacion" required>
+          <option value="purchase">Comprar</option>
+          <option value="sale">Vender</option>
         </select>
       </div>
       <div>
@@ -31,66 +31,55 @@
       </div>
       <div>
         <label for="monto">Monto en Dinero:</label>
-        <input type="number" v-bind="monto" :value="cantidadCripto * valorCripto" step="0.01" readonly required>
+        <input type="number" v-bind="monto" :value="cantidadCripto * valorCripto" readonly required>
       </div>
-      <button type="submit">Registrar Compra</button>
+      <button type="submit">Registrar Transacción</button>
     </form>
     <div v-if="verificarTransaccion">
-      <p>{{ verificarTransaccion }}</p>
-      <div v-if="operacion">
-        <h2>Detalles de la Transacción:</h2>
-        <p><strong>ID de Usuario:</strong> {{ operacion.user_id }}</p>
-        <p><strong>Acción:</strong> {{ operacion.action }}</p>
-        <p><strong>Código de Criptomoneda:</strong> {{ operacion.crypto_code }}</p>
-        <p><strong>Cantidad de Criptomoneda:</strong> {{ operacion.crypto_amount }}</p>
-        <p><strong>Monto en Dinero:</strong> {{ operacion.money }}</p>
-        <p><strong>Fecha y Hora:</strong> {{ operacion.datetime }}</p>
-      </div>
+     <p>{{ verificarTransaccion }}</p>
+     <div v-if="operacion">
+      <h2>Detalles de la Transacción:</h2>
+      <p><strong>ID de Usuario:</strong> {{ operacion.idUsuario }}</p>
+      <p><strong>Acción:</strong> {{ operacion.action === 'purchase' ? 'Compra' : 'Venta' }}</p>
+      <p><strong>Código de Criptomoneda:</strong> {{ operacion.criptomoneda }}</p>
+      <p><strong>Cantidad de Criptomoneda:</strong> {{ operacion.cantidad }}</p>
+      <p><strong>Monto en Dinero:</strong> {{ operacion.monto }}</p>
+      <p><strong>Fecha y Hora:</strong> {{ operacion.fechaHora }}</p>
     </div>
   </div>
+</div>
 </template>
 
 <script>
 import axios from 'axios';
-const apiClient = axios.create({
-  baseURL: 'https://laboratorio3-f36a.restdb.io/rest/transactions?q={"user_id":"${idUsuario}","crypto_code":"${codigoCripto}"}',
-  headers: { 'x-apikey': '60eb09146661365596af552f' }
-});
+
 export default {
   data() {
     return {
-      idUsuario: '',
-      tipoDeOperacion: '',
-      crypto_code: '',
-      cantidadCripto: '',
-      monto: '',
-      verificarTransaccion: '',
-      movimientos: [],
-      operacion: null, 
-      valorCripto: null,
-      usuarioNoVacio: false
+     idUsuario: '',
+     crypto_code: '',
+     cantidadCripto: '',
+     monto: '',
+     verificarTransaccion: '',
+     operacion: null, 
+     valorCripto: null,
+     usuarioNoVacio: false,
+     fechaHora: '',
+     tipoDeOperacion: '',
     };
   },
   methods: {
     buscarId() {
-    // buscar el usuario almacenado en localStorage
-    const idAlmacenado = localStorage.getItem('idUsuario');
-    if (idAlmacenado) {
-      this.idUsuario = idAlmacenado;
-      this.usuarioNoVacio = true;
-    }
-    else{
-      console.error('Error al obtener el id de usuario');
-    }
-  },
-    tipoDeOperacion(){
-      if(tipoDeOperacion === 'compra'){
-        this.tipoDeOperacion === 'purchase'
-      }
-      else{
-        this.tipoDeOperacion === 'sale';
+      // Buscar el usuario almacenado en localStorage
+      const idAlmacenado = localStorage.getItem('idUsuario');
+      if (idAlmacenado) {
+        this.idUsuario = idAlmacenado;
+        this.usuarioNoVacio = true;
+      } else {
+        console.error('Error al obtener el id de usuario');
       }
     },
+  
     async obtenerValorCripto() {
       if (!this.crypto_code) return;
       const moneda = this.crypto_code;
@@ -105,29 +94,39 @@ export default {
         this.valorCripto = null;
       }
     },
-    async consultarApi() {
+  
+    consultarApi() {
       const operacion = {
         user_id: this.idUsuario,
-        action: this.tipoDeOperacion === 'compra' ? 'purchase' : 'sale',
+        action: this.tipoDeOperacion,
         crypto_code: this.crypto_code,
         crypto_amount: this.cantidadCripto,
         money: this.cantidadCripto * this.valorCripto,
         datetime: new Date().toLocaleString()
       };
-      try {
-        const respuesta = await apiClient.post('/transactions', operacion);
-        this.verificarTransaccion = 'Transacción registrada exitosamente';
-        this.operacion = respuesta.data;
-        // Agregar la transacción al objeto movimientos
-        this.movimientos.push(operacion);
-        // modificar la transaccion en la misma pantalla
-        this.$modificarTransaccion(() => {
-          console.log('Transacción actualizada:', this.operacion);
-        });
-      } catch (error) {
-        //this.verificarTransaccion = 'Error al registrar la transacción';
-        console.error('Error al hacer la solicitud POST:', error.respuesta || error.mensaje);
-      }
+
+      axios
+        .post('https://laboratorio3-f36a.restdb.io/rest/transactions', operacion, {
+           headers: {
+              'x-apikey': '60eb09146661365596af552f',
+            },
+        })
+       .then((response) => {
+          console.log('Operación exitosa:', response.data);
+          // Actualizar el objeto `operacion` en `data`
+          this.operacion = {
+            idUsuario: operacion.user_id,
+            action: operacion.action,
+            criptomoneda: operacion.crypto_code,
+            cantidad: operacion.crypto_amount,
+            monto: operacion.money,
+            fechaHora: operacion.datetime
+          };
+          this.verificarTransaccion = 'Transacción registrada exitosamente';
+        })
+       .catch((error) => {
+         this.verificarTransaccion = 'Error al guardar la transacción: ' + error.message;
+       });
     }
   }
 };
