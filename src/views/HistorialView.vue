@@ -24,7 +24,7 @@
         </thead>
         <tbody>
           <tr v-for="movimiento in movimientos" :key="movimiento._id">
-            <td>{{ movimiento.datetime }}</td>
+            <td>{{ formatearFecha(movimiento.datetime) }}</td>
             <td>{{ movimiento.crypto_code }}</td>
             <td>{{ movimiento.crypto_amount }}</td>
             <td>{{ movimiento.money }}</td>
@@ -51,8 +51,9 @@ export default {
   },
   methods: {
     buscarId() {
-    const idAlmacenado = localStorage.getItem('idUsuario');
+    let idAlmacenado = localStorage.getItem('idUsuario');
     if (idAlmacenado) {
+      idAlmacenado = idAlmacenado.replace(/{"id":"|"}|"/g, '');
       this.idUsuario = idAlmacenado;
       this.usuarioNoVacio = true;
     }
@@ -83,16 +84,38 @@ export default {
       console.error(error);
       this.validarMovimientos = false;
     });
-   }
+   },
+  // Formatear la fecha en un formato legible para la vista
+  formatearFecha(fecha) {
+      const nFecha = new Date(fecha);
+      return nFecha.toLocaleString('es-ES');
+   },
   }
 };
 </script>
 
 <style>
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
 thead {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  background-color: #f2f2f2;
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+th {
+  background-color: #4CAF50;
+  color: white;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
 }
 </style>

@@ -71,8 +71,9 @@ export default {
   methods: {
     buscarId() {
       // Buscar el usuario almacenado en localStorage
-      const idAlmacenado = localStorage.getItem('idUsuario');
+      let idAlmacenado = localStorage.getItem('idUsuario');
       if (idAlmacenado) {
+        idAlmacenado = idAlmacenado.replace(/{"id":"|"}|"/g, '');
         this.idUsuario = idAlmacenado;
         this.usuarioNoVacio = true;
       } else {
@@ -102,7 +103,7 @@ export default {
         crypto_code: this.crypto_code,
         crypto_amount: this.cantidadCripto,
         money: this.cantidadCripto * this.valorCripto,
-        datetime: new Date().toLocaleString()
+        datetime: new Date().toISOString() // Cambié a ISO para asegurar un formato estándar
       };
 
       axios
