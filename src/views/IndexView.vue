@@ -16,7 +16,7 @@
     </form>
     <div v-if="idAlf">
       <p>Usuario registrado con ID: {{ idAlf }}</p>
-      <router-link to="/CompraYventa">Ir a Crypto</router-link>
+      <router-link to="/CompraYventa">Ir a CriptoCompra</router-link>
     </div>
   </div>
 </template>

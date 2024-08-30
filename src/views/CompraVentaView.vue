@@ -18,7 +18,6 @@
         <select v-model="crypto_code" @change="obtenerValorCripto" required>
           <option value="btc">Bitcoin (BTC)</option>
           <option value="eth">Ethereum (ETH)</option>
-          <option value="usdc">USD Coin (USDC)</option>
           <option value="dai">Dai (DAI)</option>
         </select>
       </div>
