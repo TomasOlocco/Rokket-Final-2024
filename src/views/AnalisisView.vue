@@ -99,11 +99,5 @@
   </script>
   
   <style>
-  .ganancia {
-    color: green;
-  }
-  .perdida {
-    color: red;
-  }
   </style>
   
