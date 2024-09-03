@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>Compra y Venta de Criptomonedas</h1>
-    <form @submit.prevent="consultarApi">
+    <form @submit.prevent="consultaApi">
       <div>
         <label for="idUsuario">ID de Usuario:</label>
         <input type="text" v-model="idUsuario" @click="buscarId" required>
@@ -95,7 +95,7 @@ export default {
       }
     },
   
-    consultarApi() {
+    consultaApi() {
       const operacion = {
         user_id: this.idUsuario,
         action: this.tipoDeOperacion,
