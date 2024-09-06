@@ -23,9 +23,11 @@
             <tr v-for="movimiento in movimientos" :key="movimiento._id">
               <td>{{ movimiento.crypto_code }}</td>
               <td>{{ movimiento.crypto_amount }}</td>
-              <td>{{ movimiento.precioCompra }}</td>
-              <td>{{ movimiento.valorActual }}</td>
-              <td>{{ movimiento.gananciaPerdida }}</td>
+              <td>$ {{ movimiento.precioCompra }}</td>
+              <td>$ {{ movimiento.valorActual }}</td>
+              <td :class="{'ganancia': movimiento.gananciaPerdida > 0, 'perdida': movimiento.gananciaPerdida < 0}">
+               $ {{ movimiento.gananciaPerdida }}
+              </td>
             </tr>
           </tbody>
         </table>
@@ -98,6 +100,12 @@
   };
   </script>
   
-  <style>
-  </style>
+<style>
+.ganancia {
+  color: green;
+}
+.perdida {
+  color: red;
+}
+</style>
   

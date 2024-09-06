@@ -1,8 +1,8 @@
 <template>
-  <nav>
-    <router-link to="/">Index</router-link> |
-    <router-link to="/compraYventa">Compra y Venta de Criptomonedas</router-link> |
-    <router-link to="/historial">Historial de Movimientos</router-link> |
+  <nav class="header__nav">
+    <router-link to="/" class="header__nav-item">Index</router-link> |
+    <router-link to="/compraYventa" class="header__nav-item">Compra y Venta de Criptomonedas</router-link> |
+    <router-link to="/historial" >Historial de Movimientos</router-link> |
     <router-link to="/analisisInversiones">Analisis de Inversiones</router-link>
   </nav>
   <router-view/>
@@ -15,6 +15,13 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+}
+
+.header__nav {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 20px;
 }
 
 nav {

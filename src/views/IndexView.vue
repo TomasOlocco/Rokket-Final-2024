@@ -4,7 +4,7 @@
           <img v-bind:src="imagenlogo" class="imagen-logo">
     <form @submit.prevent="registrarUsuario">
       <div>
-        <h1>Registro de Usuario</h1>
+        <h2>Registro de Usuario</h2>
         <label for="nombre">Nombre:</label>
         <input type="text" v-model="nombre" required>
       </div>
