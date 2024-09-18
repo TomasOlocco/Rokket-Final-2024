@@ -1,23 +1,23 @@
 <template>
 <div id="app">
-    <h1>{{ logo }}</h1>
-          <img v-bind:src="imagenlogo" class="imagen-logo">
+    <p class="logo">{{ logo }}</p>
+        <img src="/rokket.gif" class="gif-logo">
     <form @submit.prevent="registrarUsuario">
-      <div>
-        <h2>Registro de Usuario</h2>
-        <label for="nombre">Nombre:</label>
-        <input type="text" v-model="nombre" required>
-      </div>
-      <div>
-        <label for="apellido">Apellido:</label>
-        <input type="text" v-model="apellido" required>
-      </div>
-      <button type="submit">Registrar</button>
-    </form>
+    <div>
+    <h2>Registro de Usuario</h2>
+     <div>
+       <input type="text" v-model="nombre" placeholder="Nombre" required>
+     </div>
+    <div>
+      <input type="text" v-model="apellido" placeholder="Apellido" required>
+    </div>
+      <button type="submit" class="btn-registrar">Registrar</button>
+    </div>
     <div v-if="idAlf">
       <p>Usuario registrado con ID: {{ idAlf }}</p>
       <router-link to="/CompraYventa">Ir a CriptoCompra</router-link>
     </div>
+    </form>
   </div>
 </template>
 
@@ -30,7 +30,7 @@ export default {
       apellido: '',
       idAlf: null,
       logo: 'ROKKETT',
-      imagenlogo: 'https://png.pngtree.com/png-clipart/20230102/original/pngtree-cartoon-illustration-red-rocket-png-image_8856222.png'
+      imagenlogo: 'src/assets/imagenes/rokket.gif'
     };
   },
   methods: {
@@ -59,40 +59,73 @@ export default {
 
 <style>
 *{
-    color:black;
+    color:rgb(177, 162, 177);
 }
 
-hr{
-    color: black;
+#app{
+  margin-bottom: 1px;
 }
 
 body{
-    background-color: blueviolet;
+    background-color:rgb(54, 6, 56);
 }
 
-.logoSP{
-    color:antiquewhite;
+.logo{
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  font-size: 50px;
+  margin-top: -75px;
+  margin-bottom: 35px;
 }
 
-.imagen-logo{
-    width: 40px;
+.gif-logo{
+    width: 300px;
+    border-radius: 20px;
+    margin-bottom: 50px;
 }
 
 .idGenerado{
-    color: black;
-}
-
-.botonDeshabilitado {
-    background-color: grey;
-    cursor: not-allowed;
+    color: rgb(226, 226, 226);
 }
 
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   text-align: center;
-  margin-top: 60px;
 }
 form {
-  margin-bottom: 20px;
+  margin-top: -50px;
+  margin-bottom: 50px;
+}
+input[type="text"] {
+  padding: 7px;
+  margin: 2px;
+  box-sizing: border-box;
+  border: 2px solid #201f1f;
+  border-radius: 8px;
+  font-size: 16px;
+  background-color: #201f1f;
+  border-width: 0.5px;
+  border-color: black;
+}
+
+input[type="text"]::placeholder {
+  color: #888;
+}
+
+.btn-registrar {
+  background-color: #29005e;
+  margin: 10px;
+  color: white;
+  padding: 10px 20px;
+  border-width: 1px;
+  border-radius: 8px;
+  border-style: solid;
+  border-color: black;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.btn-registrar:hover {
+  background-color: #58c2ff;
 }
 </style>

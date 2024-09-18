@@ -1,14 +1,14 @@
 <template>
   <div>
-    <h1>Compra y Venta de Criptomonedas</h1>
+    <p class="CYP">Compra y Venta de Criptomonedas</p>
+    <p class="intro">Realice sus transacciones de criptomonedas</p>
     <form @submit.prevent="consultaApi">
       <div>
-        <label for="idUsuario">ID de Usuario:</label>
-        <input type="text" v-model="idUsuario" @click="buscarId" required>
+        <input type="text" v-model="idUsuario" placeholder="ID de Usuario" @click="buscarId" required>
       </div>
       <div>
-        <label for="tipoDeOperacion">Elija el tipo de operación</label>
-        <select v-model="tipoDeOperacion" required>
+        <label for="tipoDeOperacion">Elija el tipo de operación: </label>
+        <select v-model="tipoDeOperacion" placeholder="Elija el tipo de">
           <option value="purchase">Comprar</option>
           <option value="sale">Vender</option>
         </select>
@@ -25,12 +25,11 @@
         <p>Valor Actual: {{ valorCripto }} ARS</p>
       </div>
       <div>
-        <label for="cantidadCripto">Cantidad de Criptomoneda:</label>
-        <input type="number" v-model="cantidadCripto" step="0.01" required>
+        <input type="number" v-model="cantidadCripto" placeholder="Cantidad de Criptomoneda" step="0.01" required>
       </div>
       <div>
-        <label for="monto">Monto en Dinero:</label>
-        <input type="number" v-bind="monto" :value="cantidadCripto * valorCripto" readonly required>
+        <label for="monto">Monto en Dinero</label>
+        <input type="number" v-bind="monto" placeholder="Monto en Dinero" :value="cantidadCripto * valorCripto" readonly required>
       </div>
       <button type="submit">Registrar Transacción</button>
     </form>
@@ -69,7 +68,7 @@ export default {
   },
   methods: {
     buscarId() {
-      // Buscar el usuario almacenado en localStorage
+      // buscar el usuario almacenado en localStorage
       let idAlmacenado = localStorage.getItem('idUsuario');
       if (idAlmacenado) {
         idAlmacenado = idAlmacenado.replace(/{"id":"|"}|"/g, '');
@@ -102,7 +101,7 @@ export default {
         crypto_code: this.crypto_code,
         crypto_amount: this.cantidadCripto,
         money: this.cantidadCripto * this.valorCripto,
-        datetime: new Date().toISOString() // Cambié a ISO para asegurar un formato estándar
+        datetime: new Date().toISOString() // cambié a ISO para asegurar un formato estándar
       };
 
       axios
@@ -133,4 +132,18 @@ export default {
 </script>
 
 <style>
+.CYP{
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 40px;
+  margin-top: -75px;
+  margin-bottom: 125px;
+}
+.intro{
+  margin-top: -60px;
+}
+form{
+  margin-top: 35px;
+  display: block;
+  padding: 0 auto
+}
 </style>
