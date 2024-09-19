@@ -1,7 +1,7 @@
 <template>
   <nav class="header_nav">
     <link href="https://fonts.googleapis.com/css2?family=Protest+Guerrilla&family=Sansita&family=Ubuntu&display=swap" rel="stylesheet">
-    <img src="https://png.pngtree.com/png-clipart/20230102/original/pngtree-cartoon-illustration-red-rocket-png-image_8856222.png" alt="Logo">
+    <img src="/rokketOficial.png" alt="Logo">
     <router-link to="/" class="header_nav-item">Inicio</router-link> |
     <router-link to="/compraYventa" class="header_nav-item">Compra y Venta de Criptomonedas</router-link> |
     <router-link to="/historial" class="header_nav-item" >Historial de Movimientos</router-link> |
