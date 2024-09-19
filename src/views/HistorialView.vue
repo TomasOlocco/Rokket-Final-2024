@@ -1,12 +1,17 @@
 <template>
+<body>
  <div>
-    <h1>Historial de Movimientos</h1>
+    <p class="HdM">Historial de Movimientos</p>
+    <p>Consulte el historial de sus movimientos realizados</p>
     <div>
-      <label for="idUsuario">ID de Usuario:</label>
-      <input type="text" v-model="idUsuario" @click="buscarId" required>
-      <button type="submit" @click="movimientosDeUsuario"> Buscar</button>
+      <div>
+        <input type="text" v-model="idUsuario" placeholder="ID de Usuario" @click="buscarId" required>
+        <button type="submit" class="btn_Buscar" @click="movimientosDeUsuario"> Buscar</button>
+        <div v-if="nombreCompleto">
+         <p>{{ nombreCompleto }}, consulte sus movimientos...</p>
+        </div>
+      </div>
     </div>
-    <h3>Bienvenido, usuario {{ idUsuario }} estos son sus movimientos...</h3>
     <div v-if="validarMovimientos === false">
       <p>No se encontraron movimientos de este usuario</p>
     </div>
@@ -19,7 +24,7 @@
             <th>OPERACION REALIZADA</th>
             <th>MONTO</th>
             <th>FECHA Y HORA</th>
-            <th>... Edición</th>
+            <th>... Editar</th>
           </tr>
         </thead>
         <tbody>
@@ -38,19 +43,21 @@
       </table>
     </div>
     <div v-if="movimientoAEditar">
-      <h2>Editar Movimiento</h2>
       <form @submit.prevent="guardarEdicion">
-        <div>
-          <label for="edicion">Cantidad a editar:</label>
+        <div class="inputEdicion">
+          <label for="edicion">Cantidad a editar</label>
           <input type="number" v-model="movimientoAEditar.crypto_amount" step="0.01" required>
         </div>
+        <div class="edicion">
         <button type="submit">Guardar edición</button>
         <button type="button" @click="cancelarEdicion">Cancelar</button>
-        <h6>En caso de una compra, la nueva cantidad debe ser inferior a la previemente registrada</h6>
-        <h6>En caso de ser una venta, la cifra debe ser mayor</h6>
+        </div>
+        <p class="avisoEdicion">En caso de una compra, la nueva cantidad debe ser inferior a la previemente registrada. <br />
+        En caso de ser una venta, la cifra debe ser mayor.</p>
       </form>
     </div>
  </div>
+</body>
 </template>
 
 <script>
@@ -60,6 +67,7 @@ export default {
   data() {
     return {
       idUsuario: '',
+      nombreCompleto: '',
       movimientos: [],
       validarMovimientos: null,
       movimientoAEditar: null,
@@ -68,7 +76,13 @@ export default {
   },
   methods: {
     buscarId() {
+      // buscar el usuario almacenado en localStorage
       let idAlmacenado = localStorage.getItem('idUsuario');
+      let nombreAlmacenado = localStorage.getItem('nombreCompleto');
+      if(nombreAlmacenado){
+        this.nombreCompleto = nombreAlmacenado;
+      }
+      
       if (idAlmacenado) {
         idAlmacenado = idAlmacenado.replace(/{"id":"|"}|"/g, '');
         this.idUsuario = idAlmacenado;
@@ -101,6 +115,7 @@ export default {
           this.validarMovimientos = false;
         });
     },
+
     editarMovimiento(movimiento) {
      this.movimientoAEditar = { ...movimiento }; // crea una copia del movimiento para editar
      this.nuevoMonto = '';
@@ -133,6 +148,11 @@ export default {
         console.error('Error al actualizar el movimiento:', error);
       });
     },
+
+    cancelarEdicion() {
+     this.movimientoAEditar = null;
+    },
+
     // dividimos el valor existente por sí mismo para obtener el valor unitario de la cripto y multiplicamos el nuevo valor por el valor unitario para obtener la edición
     borrarMovimiento(idMovimiento) {
      const apiClient = this.ApiClient();
@@ -140,7 +160,7 @@ export default {
       apiClient.delete(`/transactions/${idMovimiento}`)
         .then(response => {
           console.log('Movimiento eliminado:', response.data);
-          this.movimientosDeUsuario(); // recarga los movimientos después de eliminar uno
+          this.movimientosDeUsuario(); // recarga los movimientos despues de eliminar uno
         })
         .catch(error => {
           console.error('Error al eliminar el movimiento:', error);
@@ -152,28 +172,108 @@ export default {
 </script>
 
 <style>
-table {
-  width: 100%;
-  border-collapse: collapse;
+.HdM{
+  font-size: 45px;
+  margin-top: -60px;
+  margin-bottom: 30px;
 }
-
-thead {
-  background-color: #f2f2f2;
+body{
+  font-family: "Ubuntu", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+table {
+  width: 80%;
+  border-collapse: collapse;
+  margin: auto;
+  margin-top: 30px;
 }
 
 th, td {
-  border: 1px solid #ddd;
+  border: 1px solid #888;
   padding: 8px;
-  text-align: left;
+  text-align: center;
 }
 
 th {
-  background-color: #4CAF50;
-  color: white;
+  background-color: #0f175f;
+  color: #b1afaf;
 }
 
 tbody tr:nth-child(even) {
   background-color: #f9f9f9;
+}
+
+input, button{
+  align-items: center;
+  margin-left: 4px;
+}
+
+.inputEdicion{
+  margin-top: 250px;
+
+}
+.edicion{
+  margin-top: 20px;
+}
+input[type="number"] {
+  padding-left: 10px;
+  border: 2px solid #201f1f;
+  border-radius: 8px;
+  font-size: 16px;
+  background-color: #201f1f;
+  border-width: 0.5px;
+  border-color: black;
+}
+button{
+  background-color: #29005e;
+  color: #888;
+  margin-top: 3px;
+  padding: 3px 10px;
+  border-width: 1px;
+  border-radius: 8px;
+  border-style: solid;
+  border-color: black;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+  gap: 10px;
+}
+
+button:hover{
+  background-color: #58c2ff;
+}
+
+.avisoEdicion{
+  gap: 15px;
+  margin-top: 30px;
+  font-size: 12px;
+}
+
+form{
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.btn_Buscar{
+  background-color: #29005e;
+  color: white;
+  padding: 8px 20px;
+  border-width: 1px;
+  border-radius: 8px;
+  border-style: solid;
+  border-color: black;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+  margin-top: 50px;
+  font-family: "Ubuntu", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.btn_Buscar:hover {
+  background-color: #58c2ff;
 }
 
 .formularioEdicion {

@@ -1,10 +1,15 @@
 <template>
+  <body>
     <div>
-      <h1>Análisis de Inversiones</h1>
-      <label for="idUsuario">ID de Usuario:</label>
-      <input type="text" v-model="idUsuario" @click="buscarId" required>
-      <button type="submit" @click="resultadoInversion">Buscar</button>
-      <h3>{{ idUsuario }}, consulte el resultado de sus inversiones...</h3>
+      <p class="Analisis"> Análisis de Inversiones</p>
+      <p>Consulte sobre los resultados de sus inversiones</p>
+      <div>
+        <input type="text" v-model="idUsuario" placeholder="ID de Usuario" @click="buscarId" required>
+        <button type="submit"  class="btn_Buscar" @click="resultadoInversion">Buscar</button>
+        <div v-if="nombreCompleto">
+         <p>{{ nombreCompleto }}, estos son los resultados de sus inversiones...</p>
+        </div>
+      </div>
       <div v-if="validarMovimientos === false">
         <p>No se encontraron movimientos de este usuario</p>
       </div>
@@ -33,7 +38,8 @@
         </table>
       </div>
     </div>
-  </template>
+  </body>
+</template>
   
   <script>
   import axios from 'axios';
@@ -42,20 +48,27 @@
     data() {
       return {
         idUsuario: '',
-        validarMovimientos: false,
+        validarMovimientos: null,
         movimientos: [],
       };
     },
     methods: {
       buscarId() {
-        let idAlmacenado = localStorage.getItem('idUsuario');
-        if (idAlmacenado) {
-          idAlmacenado = idAlmacenado.replace(/{"id":"|"}|"/g, '');
-          this.idUsuario = idAlmacenado;
-        } else {
-          console.error('Error al obtener el id de usuario');
-        }
-      },
+      // buscar el usuario almacenado en localStorage
+      let idAlmacenado = localStorage.getItem('idUsuario');
+      let nombreAlmacenado = localStorage.getItem('nombreCompleto');
+      if(nombreAlmacenado){
+        this.nombreCompleto = nombreAlmacenado;
+      }
+      
+      if (idAlmacenado) {
+        idAlmacenado = idAlmacenado.replace(/{"id":"|"}|"/g, '');
+        this.idUsuario = idAlmacenado;
+        this.usuarioNoVacio = true;
+      } else {
+        console.error('Error al obtener el id de usuario');
+      }
+    },
       async resultadoInversion() {
         const apiClient = this.ApiClient();
         try {
@@ -101,6 +114,58 @@
   </script>
   
 <style>
+.Analisis{
+  font-size: 45px;
+  margin-top: -60px;
+  margin-bottom: 30px;
+}
+body{
+  font-family: "Ubuntu", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+th, td {
+  border: 1px solid #888;
+  padding: 8px;
+  text-align: center;
+}
+
+th {
+  background-color: #0f175f;
+  color: #b1afaf;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+input, button{
+  align-items: center;
+  margin-left: 4px;
+}
+
+.btn_Buscar{
+  background-color: #29005e;
+  color: white;
+  padding: 8px 20px;
+  border-width: 1px;
+  border-radius: 8px;
+  border-style: solid;
+  border-color: black;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+  margin-top: 50px;
+  font-family: "Ubuntu", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.btn_Buscar:hover {
+  background-color: #58c2ff;
+}
+
 .ganancia {
   color: green;
 }

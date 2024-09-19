@@ -15,7 +15,8 @@
     </div>
     <div v-if="idAlf">
       <p>Usuario registrado con ID: {{ idAlf }}</p>
-      <router-link to="/CompraYventa">Ir a CriptoCompra</router-link>
+      <p v-if="error">{{ error }}</p>
+      <router-link to="/CompraYventa">Empieza con tus transacciones!</router-link>
     </div>
     </form>
   </div>
@@ -29,9 +30,15 @@ export default {
       nombre: '',
       apellido: '',
       idAlf: null,
-      logo: 'ROKKETT',
-      imagenlogo: 'src/assets/imagenes/rokket.gif'
+      logo: 'ROKKETT WALLET',
+      imagenlogo: 'src/assets/imagenes/rokket.gif',
+      error: ''
     };
+  },
+  computed: {
+    nombreCompleto() {
+      return this.nombre + ' ' + this.apellido;
+    }
   },
   methods: {
     generarId() {
@@ -43,11 +50,25 @@ export default {
       return id;
     },
     registrarUsuario() {
+      //evitar que el usuario ingrese números
+      const nombreInvalido = /\d/.test(this.nombre);
+      const apellidoInvalido = /\d/.test(this.apellido);
+      const nombreCompleto = this.nombreCompleto;
+
+      if (nombreInvalido || apellidoInvalido) {
+        this.error = 'Su nombre y apellido no pueden contener números';
+        return;
+      }
+
       const idGenerado = this.generarId();
       const idAlf = {
         id: idGenerado
       };
       localStorage.setItem('idUsuario', JSON.stringify(idAlf)),
+      localStorage.setItem('nombreCompleto', nombreCompleto);
+      
+      
+      console.log('Usuario registrado:', this.nombre, this.apellido);
       console.log(idAlf);
       this.idAlf = idGenerado;
       this.nombre = '';
@@ -71,7 +92,7 @@ body{
 }
 
 .logo{
-  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  font-family: "Protest Guerrilla", sans-serif;
   font-size: 50px;
   margin-top: -75px;
   margin-bottom: 35px;
@@ -80,7 +101,7 @@ body{
 .gif-logo{
     width: 300px;
     border-radius: 20px;
-    margin-bottom: 50px;
+    margin-bottom: 150px;
 }
 
 .idGenerado{
@@ -88,12 +109,11 @@ body{
 }
 
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
   text-align: center;
 }
 form {
   margin-top: -50px;
-  margin-bottom: 50px;
+  margin-bottom: 100px;
 }
 input[type="text"] {
   padding: 7px;
@@ -109,11 +129,14 @@ input[type="text"] {
 
 input[type="text"]::placeholder {
   color: #888;
+  font-family: "Ubuntu", sans-serif;
+  font-weight: 400;
+  font-style: normal;
 }
 
 .btn-registrar {
   background-color: #29005e;
-  margin: 10px;
+  margin: 15px;
   color: white;
   padding: 10px 20px;
   border-width: 1px;
@@ -123,6 +146,9 @@ input[type="text"]::placeholder {
   cursor: pointer;
   font-size: 16px;
   transition: background-color 0.3s ease;
+  font-family: "Ubuntu", sans-serif;
+  font-weight: 400;
+  font-style: normal;
 }
 
 .btn-registrar:hover {

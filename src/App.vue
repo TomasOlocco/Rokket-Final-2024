@@ -1,10 +1,11 @@
 <template>
-  <nav class="header__nav">
+  <nav class="header_nav">
+    <link href="https://fonts.googleapis.com/css2?family=Protest+Guerrilla&family=Sansita&family=Ubuntu&display=swap" rel="stylesheet">
     <img src="https://png.pngtree.com/png-clipart/20230102/original/pngtree-cartoon-illustration-red-rocket-png-image_8856222.png" alt="Logo">
-    <router-link to="/" class="header__nav-item">Index</router-link> |
-    <router-link to="/compraYventa" class="header__nav-item">Compra y Venta de Criptomonedas</router-link> |
-    <router-link to="/historial" class="header__nav-item" >Historial de Movimientos</router-link> |
-    <router-link to="/analisisInversiones" class="header__nav-item">Analisis de Inversiones</router-link>
+    <router-link to="/" class="header_nav-item">Inicio</router-link> |
+    <router-link to="/compraYventa" class="header_nav-item">Compra y Venta de Criptomonedas</router-link> |
+    <router-link to="/historial" class="header_nav-item" >Historial de Movimientos</router-link> |
+    <router-link to="/analisisInversiones" class="header_nav-item">Analisis de Inversiones</router-link>
   </nav>
   <router-view/>
 </template>
@@ -14,7 +15,7 @@ body {
   margin: 0;
 }
 
-.header__nav {
+.header_nav {
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -27,27 +28,33 @@ body {
   color: white;
 }
 
-.header__nav-item {
+.header_nav-item {
   padding: 16px;
   box-sizing: border-box;
   text-decoration: none;
   color: #fffe;
+  transition: color 0.3s ease, border-bottom 0.3s ease;
 }
 
-.header__nav-item:focus {
+.header_nav-item:hover {
+  color:#29005e;
+  border-bottom: 2px solid #29005e; /* para subrayar sobre  router-link*/
+}
+
+.header_nav-item:focus {
   color: rgb(102, 2, 105);
   border-bottom: 2px solid rgb(102, 2, 105);
 }
 
-.header__nav img {
+.header_nav img {
   position: absolute;
   padding: 10px;
   left: 0;
-  width: 35px;
+  width: 40px;
   transition: all 0.5s ease;
 }
 
-.header__nav img:hover {
+.header_nav img:hover {
   animation: CambiarColor 1s ease-in-out infinite;
 }
 
