@@ -31,7 +31,6 @@ export default {
       apellido: '',
       idAlf: null,
       logo: 'ROKKETT WALLET',
-      imagenlogo: 'src/assets/imagenes/rokket.gif',
       error: ''
     };
   },
@@ -93,13 +92,13 @@ body{
 
 .logo{
   font-family: "Protest Guerrilla", sans-serif;
-  font-size: 50px;
+  font-size: 55px;
   margin-top: -75px;
-  margin-bottom: 35px;
+  margin-bottom: 37px;
 }
 
 .gif-logo{
-    width: 300px;
+    width: 350px;
     border-radius: 20px;
     margin-bottom: 150px;
 }
@@ -137,6 +136,7 @@ input[type="text"]::placeholder {
 .btn-registrar {
   background-color: #29005e;
   margin: 15px;
+  margin-bottom: 50px;
   color: white;
   padding: 10px 20px;
   border-width: 1px;

@@ -119,11 +119,6 @@
   margin-top: -60px;
   margin-bottom: 30px;
 }
-body{
-  font-family: "Ubuntu", sans-serif;
-  font-weight: 400;
-  font-style: normal;
-}
 
 th, td {
   border: 1px solid #888;

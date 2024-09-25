@@ -11,6 +11,13 @@
 </template>
 
 <style>
+
+#app{
+  font-family: "Ubuntu", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
 body {
   margin: 0;
 }

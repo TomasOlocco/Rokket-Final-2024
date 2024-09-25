@@ -52,6 +52,7 @@
         <button type="submit">Guardar edición</button>
         <button type="button" @click="cancelarEdicion">Cancelar</button>
         </div>
+        <p v-if="errorEdicion" class="errorEdicion">{{ errorEdicion }}</p>
         <p class="avisoEdicion">En caso de una compra, la nueva cantidad debe ser inferior a la previemente registrada. <br />
         En caso de ser una venta, la cifra debe ser mayor.</p>
       </form>
@@ -71,7 +72,8 @@ export default {
       movimientos: [],
       validarMovimientos: null,
       movimientoAEditar: null,
-      nuevoMonto: ''
+      nuevoMonto: '',
+      errorEdicion: ''
     };
   },
   methods: {
@@ -125,13 +127,13 @@ export default {
      const movimientoOriginal = this.movimientos.find(m => m._id === this.movimientoAEditar._id);
      if (this.movimientoAEditar.action === 'purchase') {
        if (this.movimientoAEditar.crypto_amount >= movimientoOriginal.crypto_amount) {
-       alert('En caso de una compra, la nueva cantidad debe ser inferior a la previemente registrada');
-       return;
+        this.errorEdicion = 'En caso de una compra, la nueva cantidad debe ser inferior a la previemente registrada';
+        return;
       }
     } else if (this.movimientoAEditar.action === 'sale') {
        if (this.movimientoAEditar.crypto_amount < movimientoOriginal.crypto_amount) {
-       alert('En caso de una venta, la nueva cantidad debe ser mayor a la previemente registrada');
-       return;
+        this.errorEdicion = 'En caso de una venta, la nueva cantidad debe ser mayor a la previemente registrada';
+        return;
       }
     }
     const valorUnitario = movimientoOriginal.money / movimientoOriginal.crypto_amount;
@@ -142,7 +144,7 @@ export default {
         console.log('Movimiento actualizado:', response.data);
         this.movimientosDeUsuario(); // recarga los movimientos
         this.movimientoAEditar = null; // limpia el formulario de edicion
-        alert('Movimiento editado con éxito.');
+        return('Movimiento editado con éxito.');
       })
       .catch(error => {
         console.error('Error al actualizar el movimiento:', error);
@@ -177,16 +179,13 @@ export default {
   margin-top: -60px;
   margin-bottom: 30px;
 }
-body{
-  font-family: "Ubuntu", sans-serif;
-  font-weight: 400;
-  font-style: normal;
-}
+
 table {
   width: 80%;
   border-collapse: collapse;
   margin: auto;
   margin-top: 30px;
+  margin-bottom: 70px
 }
 
 th, td {
@@ -267,9 +266,6 @@ form{
   font-size: 16px;
   transition: background-color 0.3s ease;
   margin-top: 50px;
-  font-family: "Ubuntu", sans-serif;
-  font-weight: 400;
-  font-style: normal;
 }
 
 .btn_Buscar:hover {
@@ -286,5 +282,13 @@ form{
   border: 1px solid #00ccff;
   border-radius: 4px;
   color: white;
+  margin-bottom: 70px;
+}
+
+.errorEdicion{
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-size: 18px;
+  color: rgb(190, 190, 8)
 }
 </style>

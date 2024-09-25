@@ -150,12 +150,6 @@ export default {
   margin-bottom: 30px;
 }
 
-body{
-  font-family: "Ubuntu", sans-serif;
-  font-weight: 400;
-  font-style: normal;
-}
-
 form.form-container {
   flex-direction: column; 
   gap: 5px;
@@ -191,6 +185,7 @@ form input[type="number"] {
   width: 100%;
   padding: 4px;
   padding-left: 10px;
+  margin: 2px;
 }
 
 input[type="number"] {
@@ -217,9 +212,6 @@ select{
   background-color: #201f1f;
   border-width: 0.5px;
   border-color: black;
-  font-family: "Ubuntu", sans-serif;
-  font-weight: 400;
-  font-style: normal;
   margin-left: 50px;
 }
 .btn-registrar {
@@ -235,7 +227,7 @@ select{
   font-size: 16px;
   transition: background-color 0.3s ease;
   margin-top: 50px;
-  margin-bottom: 80px;
+  margin-bottom: 120px;
 }
 
 .btn-registrar:hover {
@@ -247,6 +239,6 @@ select{
   color: #888;
   gap: 15px;
   margin-top: 30px;
-  margin-bottom: 60px;
+  margin-bottom: 70px;
 }
 </style>
